@@ -81,7 +81,7 @@
 
 
 <script>
-import TableComponent from '@/views/common/tableComponent';
+import TableComponent from '../common/tableComponent';
 import AddOrUpdate from './matter-handle';
 import FlowChart from './matter-FlowChart';
 export default {

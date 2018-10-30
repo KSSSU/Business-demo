@@ -45,232 +45,232 @@
 </template>
 
 <script>
-import TableComponent from "@/views/common/tableComponent";
-import DownLoadTemplate from "./downLoad-template";
-import MatterHandle from "@/views/modules/matterService/matter-handle";
+import TableComponent from '../common/tableComponent';
+import DownLoadTemplate from './downLoad-template';
+import MatterHandle from '../matterService/matter-handle';
 export default {
-  data() {
-    return {
-      dataListSelections: [],
-      dataForm: {
-        isTemplate: "",
-        name: "",
-        matMatstorageName: "",
-        matterName: ""
-      },
-      downLoadVisible: false,
-      matterVisible: false
-    };
-  },
-  props: {
-    tableHeader: {
-      type: Array,
-      default: function() {
-        return [];
-      }
-    },
-    columnData: {
-      type: Array,
-      default: function() {
-        return [];
-      }
-    },
-    url: {
-      type: String,
-      default: ""
-    },
-    templateName: {
-      type: String,
-      default: ""
-    }
-  },
-  components: {
-    TableComponent,
-    DownLoadTemplate,
-    MatterHandle
-  },
-  methods: {
-    //搜索
-    fetchDataList() {
-      this.$nextTick(() => {
-        this.$refs["tableComponent"].getDataList();
-      });
-    },
-    //多选触发
-    selectionChangeHandle(val) {
-      this.dataListSelections = val;
-    },
-    //按钮操作
-    buttonEven(even, row) {
-      if (even == "setTemplate") {
-        //设为模板
-        this.setTemplate(row.id);
-      } else if (even == "detailHandle") {
-        //详情
-        if (this.templateName == "themeMatter") {
-          //主题模板
-          this.matterVisible = true;
-          this.$nextTick(() => {
-            this.$refs.MatterHandle.init(row.id, true);
-          });
-        }
-      } else {
-        this.downLoad(row.id);
-      }
-    },
-    //导出数据
-    downLoadData() {
-      this.downLoadVisible = true;
-      this.$nextTick(() => {
-        this.$refs["downLoadTemplate"].init(this.columnData);
-      });
-    },
-    //设为模板
-    setTemplate(id) {
-      var itemIds = id
-        ? [id]
-        : this.dataListSelections.map(item => {
-            return item.id;
-          });
-      this.$confirm("确认将已选中的事项设置为模板？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$http({
-            url: this.$http.adornUrl(this.url + "/setTemplate"),
-            method: "post",
-            data: this.$http.adornData(itemIds, false)
-          }).then(({ data }) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: "操作成功",
-                type: "success",
-                duration: 1500,
-                onClose: () => {
-                  this.fetchDataList();
-                }
-              });
-            } else {
-              this.$message.error(data.msg);
-            }
-          });
-        })
-        .catch(() => {});
-    },
-    //批量取消模板
-    cancleTemplate() {
-      var itemIds = this.dataListSelections.map(item => {
-        return item.id;
-      });
-      this.$confirm("确认取消已选中的事项为模板？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$http({
-            url: this.$http.adornUrl(this.url + "/cancleTemplate"),
-            method: "post",
-            data: this.$http.adornData(itemIds, false)
-          }).then(({ data }) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: "操作成功",
-                type: "success",
-                duration: 1500,
-                onClose: () => {
-                  this.fetchDataList();
-                }
-              });
-            } else {
-              this.$message.error(data.msg);
-            }
-          });
-        })
-        .catch(() => {});
-    },
-    //批量无效
-    deleteAll() {
-      var itemIds = this.dataListSelections.map(item => {
-        return item.id;
-      });
-      this.$confirm("确认无效所有选中数据？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$http({
-            url: this.$http.adornUrl(this.url + "/deleteAll"),
-            method: "post",
-            data: this.$http.adornData(itemIds, false)
-          }).then(({ data }) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: "操作成功",
-                type: "success",
-                duration: 1500,
-                onClose: () => {
-                  this.fetchDataList();
-                }
-              });
-            } else {
-              this.$message.error(data.msg);
-            }
-          });
-        })
-        .catch(() => {});
-    },
-    //下载/批量下载
-    downLoad(id) {
-      var itemIds = id
-        ? [id]
-        : this.dataListSelections.map(item => {
-            return item.id;
-          });
-      this.$confirm(`确认${id ? "下载" : "批量下载"}此条事项？`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$http({
-            url: this.$http.adornUrl(this.url + "/downLoad"),
-            method: "post",
-            data: this.$http.adornData(itemIds, false)
-          }).then(({ data }) => {
-            if (data && data.code === 0) {
-              this.$message({
-                message: "操作成功",
-                type: "success",
-                duration: 1500,
-                onClose: () => {
-                  this.fetchDataList();
-                }
-              });
-            } else {
-              this.$message.error(data.msg);
-            }
-          });
-        })
-        .catch(() => {});
-    }
-  }
+	data() {
+		return {
+			dataListSelections: [],
+			dataForm: {
+				isTemplate: '',
+				name: '',
+				matMatstorageName: '',
+				matterName: ''
+			},
+			downLoadVisible: false,
+			matterVisible: false
+		};
+	},
+	props: {
+		tableHeader: {
+			type: Array,
+			default: function() {
+				return [];
+			}
+		},
+		columnData: {
+			type: Array,
+			default: function() {
+				return [];
+			}
+		},
+		url: {
+			type: String,
+			default: ''
+		},
+		templateName: {
+			type: String,
+			default: ''
+		}
+	},
+	components: {
+		TableComponent,
+		DownLoadTemplate,
+		MatterHandle
+	},
+	methods: {
+		//搜索
+		fetchDataList() {
+			this.$nextTick(() => {
+				this.$refs['tableComponent'].getDataList();
+			});
+		},
+		//多选触发
+		selectionChangeHandle(val) {
+			this.dataListSelections = val;
+		},
+		//按钮操作
+		buttonEven(even, row) {
+			if (even == 'setTemplate') {
+				//设为模板
+				this.setTemplate(row.id);
+			} else if (even == 'detailHandle') {
+				//详情
+				if (this.templateName == 'themeMatter') {
+					//主题模板
+					this.matterVisible = true;
+					this.$nextTick(() => {
+						this.$refs.MatterHandle.init(row.id, true);
+					});
+				}
+			} else {
+				this.downLoad(row.id);
+			}
+		},
+		//导出数据
+		downLoadData() {
+			this.downLoadVisible = true;
+			this.$nextTick(() => {
+				this.$refs['downLoadTemplate'].init(this.columnData);
+			});
+		},
+		//设为模板
+		setTemplate(id) {
+			var itemIds = id
+				? [id]
+				: this.dataListSelections.map(item => {
+						return item.id;
+				  });
+			this.$confirm('确认将已选中的事项设置为模板？', '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			})
+				.then(() => {
+					this.$http({
+						url: this.$http.adornUrl(this.url + '/setTemplate'),
+						method: 'post',
+						data: this.$http.adornData(itemIds, false)
+					}).then(({ data }) => {
+						if (data && data.code === 0) {
+							this.$message({
+								message: '操作成功',
+								type: 'success',
+								duration: 1500,
+								onClose: () => {
+									this.fetchDataList();
+								}
+							});
+						} else {
+							this.$message.error(data.msg);
+						}
+					});
+				})
+				.catch(() => {});
+		},
+		//批量取消模板
+		cancleTemplate() {
+			var itemIds = this.dataListSelections.map(item => {
+				return item.id;
+			});
+			this.$confirm('确认取消已选中的事项为模板？', '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			})
+				.then(() => {
+					this.$http({
+						url: this.$http.adornUrl(this.url + '/cancleTemplate'),
+						method: 'post',
+						data: this.$http.adornData(itemIds, false)
+					}).then(({ data }) => {
+						if (data && data.code === 0) {
+							this.$message({
+								message: '操作成功',
+								type: 'success',
+								duration: 1500,
+								onClose: () => {
+									this.fetchDataList();
+								}
+							});
+						} else {
+							this.$message.error(data.msg);
+						}
+					});
+				})
+				.catch(() => {});
+		},
+		//批量无效
+		deleteAll() {
+			var itemIds = this.dataListSelections.map(item => {
+				return item.id;
+			});
+			this.$confirm('确认无效所有选中数据？', '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			})
+				.then(() => {
+					this.$http({
+						url: this.$http.adornUrl(this.url + '/deleteAll'),
+						method: 'post',
+						data: this.$http.adornData(itemIds, false)
+					}).then(({ data }) => {
+						if (data && data.code === 0) {
+							this.$message({
+								message: '操作成功',
+								type: 'success',
+								duration: 1500,
+								onClose: () => {
+									this.fetchDataList();
+								}
+							});
+						} else {
+							this.$message.error(data.msg);
+						}
+					});
+				})
+				.catch(() => {});
+		},
+		//下载/批量下载
+		downLoad(id) {
+			var itemIds = id
+				? [id]
+				: this.dataListSelections.map(item => {
+						return item.id;
+				  });
+			this.$confirm(`确认${id ? '下载' : '批量下载'}此条事项？`, '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			})
+				.then(() => {
+					this.$http({
+						url: this.$http.adornUrl(this.url + '/downLoad'),
+						method: 'post',
+						data: this.$http.adornData(itemIds, false)
+					}).then(({ data }) => {
+						if (data && data.code === 0) {
+							this.$message({
+								message: '操作成功',
+								type: 'success',
+								duration: 1500,
+								onClose: () => {
+									this.fetchDataList();
+								}
+							});
+						} else {
+							this.$message.error(data.msg);
+						}
+					});
+				})
+				.catch(() => {});
+		}
+	}
 };
 </script>
 
 
 <style lang="scss">
 .btn-cyan {
-  background-color: #12b2b4 !important;
-  border-color: #12b2b4 !important;
-  color: #fff !important;
+	background-color: #12b2b4 !important;
+	border-color: #12b2b4 !important;
+	color: #fff !important;
 }
 .btn-blue {
-  color: #fff !important;
-  background-color: #20a0ff !important;
-  border-color: #20a0ff !important;
+	color: #fff !important;
+	background-color: #20a0ff !important;
+	border-color: #20a0ff !important;
 }
 </style>

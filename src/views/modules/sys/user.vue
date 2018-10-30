@@ -22,7 +22,7 @@
 
 <script>
 import AddOrUpdate from './user-add-or-update';
-import TableComponent from '@/views/common/tableComponent';
+import TableComponent from '../common/tableComponent';
 export default {
 	data() {
 		return {
